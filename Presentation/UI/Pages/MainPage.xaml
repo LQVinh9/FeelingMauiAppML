@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<v1:BasePage xmlns:v1="clr-namespace:MauiAppML.Presentation.UI.Pages.Base"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiAppML.Presentation.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiAppML.Presentation.UI.Pages.MainPage">
+
+    <ContentPage.BindingContext>
+        <vm:PredictViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="25"
+                                 Padding="30"
+                                 VerticalOptions="Center">
+
+                <Label Text="predict negative or positive"
+                       TextTransform="Uppercase"
+                       TextColor="#00A2FF"
+                       SemanticProperties.HeadingLevel="Level1"
+                       FontFamily="BanhMi"
+                       FontSize="23"
+                       HorizontalOptions="Center" />
+
+                <Label Text="How do you feel today?"
+                       FontFamily="BanhMi"
+                       SemanticProperties.HeadingLevel="Level1"
+                       SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                       FontSize="22"
+                       HorizontalOptions="Center" />
+
+                <Editor x:Name="editor"
+                        Placeholder="Enter your feeling here ..."
+                        Text="{Binding FeedBackText}"
+                        AutoSize="TextChanges">
+                    <Editor.Behaviors>
+                        <toolkit:UserStoppedTypingBehavior Command="{Binding Commands[Predict]}"
+                                                           StoppedTypingTimeThreshold="1000"
+                                                           MinimumLengthThreshold="5"
+                                                           ShouldDismissKeyboardAutomatically="True" />
+                        <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                        Command="{Binding Commands[ResetResult]}" />
+                    </Editor.Behaviors>
+                </Editor>
+
+                <Label Text="Prediction result:"
+                       FontSize="22"
+                       TextColor="#FF9A00"
+                       FontFamily="BanhMi"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <Label Text="{Binding PredictionResult, StringFormat='{0}'}"
+                       FontSize="22"
+                       TextColor="#50B731"
+                       FontFamily="BanhMi"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <Image Source="feel.jpg"
+                       SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                       WidthRequest="100"
+                       HeightRequest="100"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HeightRequest="40"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand" />
+    </Grid>
+</v1:BasePage>
